@@ -14,78 +14,36 @@ const Wrapper = styled(motion.div)`
 
 const Box = styled(motion.div)`
   width: 400px;
-  height: 200px;
+  height: 400px;
   background-color: rgba(255, 255, 255, 1);
   border-radius: 40px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  position: absolute;
-  top: 200px;
+  justify-content: flex-start;
+  align-items: flex-start;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const boxNext = {
-  entry: (back: boolean) => {
-    return {
-      x: back ? -500 : 500,
-      opacity: 0,
-      scale: 0,
-      transition: {
-        duration: 1,
-      },
-    };
-  },
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 1,
-    },
-  },
-  exit: (back: boolean) => {
-    return {
-      x: back ? 500 : -500,
-      opacity: 0,
-      scale: 0,
-      transition: {
-        duration: 1,
-      },
-    };
-  },
-};
+const Circle = styled(motion.div)`
+  background-color: #00a5ff;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
 
 function App() {
-  const [visible, setVisible] = useState(1);
-  const [back, setBack] = useState(false);
-  const nextPlease = () => {
-    setBack(false);
-    setVisible((prev) => (prev === 10 ? 10 : prev + 1));
-  };
-  const prevPlease = () => {
-    setBack(true);
-    setVisible((prev) => (prev === 1 ? 1 : prev - 1));
-  };
+  const [clicked, setClicked] = useState(false);
+  const toggleClicked = () => setClicked((prev) => !prev);
   return (
-    <Wrapper>
-      <AnimatePresence custom={back}>
-        <Box
-          custom={back}
-          variants={boxNext}
-          initial="entry"
-          animate="center"
-          exit="exit"
-          key={visible}
-        >
-          {visible}
-        </Box>
-      </AnimatePresence>
-      <div className="button">
-        <button onClick={prevPlease}>prev</button>
-        <button onClick={nextPlease}>next</button>
-      </div>
+    <Wrapper onClick={toggleClicked}>
+      <Box
+        style={{
+          justifyContent: clicked ? "center" : "flex-start",
+          alignItems: clicked ? "center" : "flex-start",
+        }}
+      >
+        <Circle layout />
+      </Box>
     </Wrapper>
   );
 }
